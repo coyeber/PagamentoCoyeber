@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pagamento Uniforme Unicap Vôlei</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Raleway:wght@400;600;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --vinho: #5C0A20;
+    --vinho-dark: #2E0410;
+    --vinho-mid: #7A1030;
+    --gold: #C9A84C;
+    --gold-light: #E8C96A;
+    --gold-pale: #F5E4A8;
+    --cream: #FAF3E0;
+    --dark: #1A0008;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background-color: var(--dark);
+    color: var(--cream);
+    font-family: 'Raleway', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      repeating-linear-gradient(-60deg, transparent, transparent 40px, rgba(201,168,76,0.025) 40px, rgba(201,168,76,0.025) 80px),
+      repeating-linear-gradient(60deg, transparent, transparent 40px, rgba(92,10,32,0.06) 40px, rgba(92,10,32,0.06) 80px);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .orb { position: fixed; border-radius: 50%; pointer-events: none; z-index: 0; filter: blur(80px); }
+  .orb-1 { width: 600px; height: 600px; background: radial-gradient(circle, rgba(92,10,32,0.55), transparent 70%); top: -200px; right: -200px; animation: drift 12s ease-in-out infinite; }
+  .orb-2 { width: 400px; height: 400px; background: radial-gradient(circle, rgba(201,168,76,0.1), transparent 70%); bottom: -100px; left: -100px; animation: drift 15s ease-in-out infinite reverse; }
+  .orb-3 { width: 350px; height: 350px; background: radial-gradient(circle, rgba(122,16,48,0.35), transparent 70%); top: 50%; left: 50%; transform: translate(-50%,-50%); animation: drift 10s ease-in-out infinite; }
+
+  @keyframes drift {
+    0%,100% { transform: translate(0,0) scale(1); }
+    33% { transform: translate(30px,-20px) scale(1.05); }
+    66% { transform: translate(-20px,30px) scale(0.95); }
+  }
+
+  @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-18px); } }
+  @keyframes spin-slow { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+  @keyframes badge-glow { 0%,100% { box-shadow: 0 0 0 0 rgba(201,168,76,0); } 50% { box-shadow: 0 0 24px rgba(201,168,76,0.18); } }
+  @keyframes modal-in { from { opacity: 0; transform: scale(0.88) translateY(28px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+
+  .stripe-top {
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--gold), var(--gold-light), var(--gold), transparent);
+    position: relative; z-index: 10;
+  }
+
+  header { position: relative; z-index: 10; }
+
+  .top-bar {
+    background: rgba(92,10,32,0.85);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(201,168,76,0.18);
+    text-align: center;
+    padding: 9px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+
+  .nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 40px 20px 24px;
+    gap: 14px;
+  }
+
+  .ornament { display: flex; align-items: center; gap: 14px; }
+  .ornament-line { width: 55px; height: 1px; background: linear-gradient(90deg, transparent, rgba(201,168,76,0.5)); }
+  .ornament-line.r { background: linear-gradient(90deg, rgba(201,168,76,0.5), transparent); }
+  .ornament-gem { width: 7px; height: 7px; background: var(--gold); transform: rotate(45deg); box-shadow: 0 0 8px rgba(201,168,76,0.5); }
+
+  .logo-ball { font-size: 50px; animation: spin-slow 25s linear infinite; filter: drop-shadow(0 0 18px rgba(201,168,76,0.35)); }
+
+  .logo-text { text-align: center; }
+  .logo-text h1 {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(26px, 6vw, 58px);
+    font-weight: 900;
+    letter-spacing: 6px;
+    line-height: 1;
+    background: linear-gradient(135deg, var(--gold-pale) 0%, var(--gold) 40%, var(--gold-light) 60%, var(--gold-pale) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .logo-text .sub {
+    font-size: 10px;
+    letter-spacing: 7px;
+    text-transform: uppercase;
+    color: rgba(201,168,76,0.5);
+    margin-top: 6px;
+    display: block;
+  }
+
+  .hero { position: relative; z-index: 10; text-align: center; padding: 30px 20px 50px; }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    border: 1px solid rgba(201,168,76,0.35);
+    background: rgba(201,168,76,0.07);
+    color: var(--gold-light);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    padding: 8px 24px;
+    margin-bottom: 28px;
+    animation: badge-glow 3s ease-in-out infinite;
+  }
+
+  .hero h2 {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(32px, 7vw, 82px);
+    font-weight: 900;
+    letter-spacing: 2px;
+    line-height: 1;
+    margin-bottom: 18px;
+  }
+  .hero h2 .l1 { display: block; color: var(--cream); opacity: 0.88; }
+  .hero h2 .l2 {
+    display: block;
+    background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 50%, var(--gold) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: drop-shadow(0 0 28px rgba(201,168,76,0.35));
+  }
+
+  .hero p {
+    font-size: 14px;
+    color: rgba(250,243,224,0.5);
+    max-width: 440px;
+    margin: 0 auto 40px;
+    line-height: 1.75;
+  }
+
+  .divider { display: flex; align-items: center; gap: 14px; max-width: 480px; margin: 0 auto 48px; padding: 0 20px; }
+  .div-line { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, rgba(201,168,76,0.45), transparent); }
+  .div-gem { width: 6px; height: 6px; background: var(--gold); transform: rotate(45deg); box-shadow: 0 0 10px rgba(201,168,76,0.5); }
+
+  .sec-label { position: relative; z-index: 10; text-align: center; margin-bottom: 24px; }
+  .sec-label span { font-size: 10px; letter-spacing: 5px; text-transform: uppercase; color: rgba(201,168,76,0.5); font-weight: 700; }
+
+  /* CARDS */
+  .cards-grid {
+    position: relative; z-index: 10;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 22px;
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 0 20px 90px;
+  }
+
+  @media (min-width: 820px) { .cards-grid { grid-template-columns: 1fr 1fr 1fr; } }
+
+  .card {
+    position: relative;
+    border-radius: 2px;
+    overflow: hidden;
+    transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.35s ease;
+  }
+  .card:hover { transform: translateY(-10px); }
+
+  .card::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+  }
+
+  .card-fem {
+    background: linear-gradient(150deg, #5C0A20 0%, #3D0616 55%, #2A040F 100%);
+    border: 1px solid rgba(201,168,76,0.22);
+  }
+  .card-fem::after { background: linear-gradient(90deg, transparent, var(--gold), transparent); }
+  .card-fem:hover { box-shadow: 0 22px 60px rgba(92,10,32,0.65), 0 0 30px rgba(201,168,76,0.12); }
+
+  .card-masc {
+    background: linear-gradient(150deg, #3D0616 0%, #5C0A20 55%, #7A1030 100%);
+    border: 1px solid rgba(201,168,76,0.22);
+  }
+  .card-masc::after { background: linear-gradient(90deg, transparent, var(--gold-light), transparent); }
+  .card-masc:hover { box-shadow: 0 22px 60px rgba(92,10,32,0.65), 0 0 30px rgba(201,168,76,0.12); }
+
+  .card-uni {
+    background: linear-gradient(150deg, #1A0008 0%, #2E0410 55%, #1A0008 100%);
+    border: 1px solid rgba(201,168,76,0.32);
+  }
+  .card-uni::after { background: linear-gradient(90deg, transparent, var(--gold-pale), var(--gold), var(--gold-pale), transparent); }
+  .card-uni:hover { box-shadow: 0 22px 60px rgba(0,0,0,0.85), 0 0 40px rgba(201,168,76,0.18); }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    top: -60%; left: -60%;
+    width: 200%; height: 200%;
+    background: radial-gradient(circle at 40% 40%, rgba(201,168,76,0.065) 0%, transparent 55%);
+    pointer-events: none;
+  }
+
+  .card-inner {
+    position: relative; z-index: 2;
+    padding: 42px 28px 38px;
+    display: flex; flex-direction: column;
+    align-items: center; text-align: center;
+    gap: 14px;
+  }
+
+  .card-bg-letter {
+    font-family: 'Cinzel', serif;
+    font-size: 90px;
+    font-weight: 900;
+    line-height: 1;
+    opacity: 0.055;
+    position: absolute;
+    bottom: 6px; right: 14px;
+    background: linear-gradient(135deg, var(--gold-pale), transparent);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    pointer-events: none;
+  }
+
+  .card-tag { font-size: 9px; letter-spacing: 4px; text-transform: uppercase; font-weight: 700; color: rgba(201,168,76,0.6); margin-bottom: -4px; }
+  .card-icon { font-size: 46px; filter: drop-shadow(0 4px 14px rgba(0,0,0,0.45)); }
+
+  .card h3 {
+    font-family: 'Cinzel', serif;
+    font-size: 19px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    background: linear-gradient(135deg, var(--gold-pale), var(--gold-light));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1.25;
+  }
+
+  .card p { font-size: 13px; color: rgba(250,243,224,0.48); line-height: 1.6; }
+
+  /* Buttons */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    padding: 14px 24px;
+    font-family: 'Raleway', sans-serif;
+    font-size: 11px; font-weight: 900;
+    letter-spacing: 3px; text-transform: uppercase;
+    text-decoration: none; border: none;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    margin-top: 8px;
+    position: relative; overflow: hidden;
+  }
+
+  .btn-gold {
+    background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 50%, var(--gold) 100%);
+    color: var(--vinho-dark);
+    box-shadow: 0 4px 20px rgba(201,168,76,0.28);
+  }
+  .btn-gold:hover { box-shadow: 0 6px 32px rgba(201,168,76,0.5); filter: brightness(1.06); }
+
+  .btn-wp {
+    background: linear-gradient(135deg, #25D366 0%, #1aab4e 100%);
+    color: white;
+    box-shadow: 0 4px 20px rgba(37,211,102,0.18);
+  }
+  .btn-wp:hover { box-shadow: 0 6px 32px rgba(37,211,102,0.38); filter: brightness(1.05); }
+
+  /* Footer */
+  footer {
+    position: relative; z-index: 10;
+    text-align: center;
+    padding: 26px 20px;
+    border-top: 1px solid rgba(201,168,76,0.1);
+  }
+  .foot-orn { display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 12px; }
+  .foot-line { width: 38px; height: 1px; }
+  .foot-line.l { background: linear-gradient(90deg, transparent, rgba(201,168,76,0.4)); }
+  .foot-line.r { background: linear-gradient(90deg, rgba(201,168,76,0.4), transparent); }
+  .foot-gem { width: 5px; height: 5px; background: var(--gold); transform: rotate(45deg); opacity: 0.45; }
+  footer p { font-size: 10px; letter-spacing: 4px; text-transform: uppercase; color: rgba(201,168,76,0.32); }
+
+  /* MODAL */
+  .modal-overlay {
+    display: none;
+    position: fixed; inset: 0;
+    background: rgba(10,0,5,0.9);
+    backdrop-filter: blur(14px);
+    z-index: 200;
+    align-items: center; justify-content: center;
+    padding: 20px;
+  }
+  .modal-overlay.active { display: flex; }
+
+  .modal {
+    background: linear-gradient(160deg, #2E0410, #1A0008);
+    border: 1px solid rgba(201,168,76,0.28);
+    border-radius: 2px;
+    width: 100%; max-width: 500px;
+    max-height: 92vh; overflow-y: auto;
+    animation: modal-in 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+    scrollbar-width: thin;
+    scrollbar-color: rgba(201,168,76,0.3) transparent;
+  }
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: rgba(201,168,76,0.3); border-radius: 2px; }
+
+  .modal-stripe { height: 2px; background: linear-gradient(90deg, transparent, var(--gold-pale), var(--gold), var(--gold-pale), transparent); }
+
+  .modal-header {
+    padding: 26px 30px 22px;
+    display: flex; align-items: flex-start;
+    justify-content: space-between;
+    border-bottom: 1px solid rgba(201,168,76,0.13);
+  }
+  .mh-title { font-family: 'Cinzel', serif; font-size: 21px; font-weight: 700; background: linear-gradient(135deg, var(--gold-pale), var(--gold-light)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 3px; }
+  .mh-sub { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: rgba(201,168,76,0.45); }
+
+  .modal-close {
+    background: rgba(201,168,76,0.08);
+    border: 1px solid rgba(201,168,76,0.2);
+    color: var(--gold);
+    font-size: 16px;
+    width: 36px; height: 36px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; transition: all 0.2s;
+    flex-shrink: 0; margin-left: 16px;
+  }
+  .modal-close:hover { background: rgba(201,168,76,0.18); color: var(--gold-light); }
+
+  .modal-body { padding: 26px 30px 30px; display: flex; flex-direction: column; gap: 18px; }
+
+  .fg { display: flex; flex-direction: column; gap: 7px; }
+  .fg label { font-size: 10px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: rgba(201,168,76,0.75); }
+
+  .fg input, .fg select {
+    background: rgba(201,168,76,0.04);
+    border: 1px solid rgba(201,168,76,0.2);
+    color: var(--cream);
+    padding: 13px 15px;
+    font-family: 'Raleway', sans-serif;
+    font-size: 14px; font-weight: 600;
+    transition: border-color 0.2s, background 0.2s;
+    width: 100%;
+    -webkit-appearance: none;
+    border-radius: 1px; outline: none;
+  }
+  .fg input:focus, .fg select:focus { border-color: var(--gold); background: rgba(201,168,76,0.07); }
+  .fg select option { background: #2E0410; color: var(--cream); }
+  .fg input::placeholder { color: rgba(250,243,224,0.22); }
+
+  .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+  /* Genero tabs */
+  .gtabs { display: grid; grid-template-columns: 1fr 1fr; border: 1px solid rgba(201,168,76,0.22); overflow: hidden; }
+  .gtab {
+    padding: 13px;
+    text-align: center; cursor: pointer;
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 2px; text-transform: uppercase;
+    color: rgba(201,168,76,0.45);
+    background: transparent; border: none;
+    transition: all 0.2s;
+  }
+  .gtab:first-child { border-right: 1px solid rgba(201,168,76,0.22); }
+  .gtab.active { background: rgba(201,168,76,0.13); color: var(--gold-light); }
+
+  .err { display: none; color: #FF6B6B; font-size: 11px; font-weight: 600; }
+  .fg.has-error input, .fg.has-error select, .fg.has-error .gtabs { border-color: #FF6B6B !important; }
+  .fg.has-error .err { display: block; }
+
+  .mdiv { height: 1px; background: linear-gradient(90deg, transparent, rgba(201,168,76,0.28), transparent); }
+
+  .btn-send {
+    background: linear-gradient(135deg, #25D366 0%, #1aab4e 100%);
+    color: white; padding: 16px;
+    border: none; cursor: pointer;
+    display: flex; align-items: center;
+    justify-content: center; gap: 10px;
+    font-family: 'Raleway', sans-serif;
+    font-size: 11px; font-weight: 900;
+    letter-spacing: 3px; text-transform: uppercase;
+    width: 100%;
+    transition: all 0.25s;
+    margin-top: 4px;
+    box-shadow: 0 4px 20px rgba(37,211,102,0.18);
+  }
+  .btn-send:hover { box-shadow: 0 6px 30px rgba(37,211,102,0.38); filter: brightness(1.05); }
+</style>
+</head>
+<body>
+
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+<div class="orb orb-3"></div>
+
+<div class="stripe-top"></div>
+
+<header>
+  <div class="top-bar">🏐 Temporada 2026 &nbsp;·&nbsp; Unicap Vôlei &nbsp;·&nbsp; Pedido de Uniformes</div>
+  <nav class="nav">
+    <div class="ornament">
+      <div class="ornament-line"></div>
+      <div class="ornament-gem"></div>
+      <div class="ornament-line r"></div>
+    </div>
+    <div class="logo-ball">🏐</div>
+    <div class="logo-text">
+      <h1>Unicap Vôlei</h1>
+      <span class="sub">Uniforme Oficial · 2026</span>
+    </div>
+    <div class="ornament">
+      <div class="ornament-line"></div>
+      <div class="ornament-gem"></div>
+      <div class="ornament-line r"></div>
+    </div>
+  </nav>
+</header>
+
+<div class="hero">
+  <div class="hero-badge">✦ Inscrições Abertas ✦</div>
+  <h2>
+    <span class="l1">Garanta</span>
+    <span class="l2">Seu Uniforme</span>
+  </h2>
+  <p>Realize o pagamento da inscrição e preencha os dados do seu uniforme para garantir sua vaga no time!</p>
+  <div class="divider">
+    <div class="div-line"></div>
+    <div class="div-gem"></div>
+    <div class="div-line"></div>
+  </div>
+</div>
+
+<div class="sec-label">
+  <span>✦ Escolha uma opção abaixo ✦</span>
+</div>
+
+<div class="cards-grid">
+
+  <!-- FEMININO -->
+  <div class="card card-fem">
+    <div class="card-bg-letter">F</div>
+    <div class="card-inner">
+      <div class="card-tag">Pagamento · Etapa 1</div>
+      <div class="card-icon">👩</div>
+      <h3>Uniforme Feminino</h3>
+      <p>Inscrição do uniforme feminino via Mercado Pago</p>
+      <!-- 🔴 SUBSTITUA PELO LINK DO MERCADO PAGO FEMININO -->
+      <a href="https://mpago.la/2VgrgSw" target="_blank" class="btn btn-gold">
+        💳 Pagar Agora
+      </a>
+    </div>
+  </div>
+
+  <!-- MASCULINO -->
+  <div class="card card-masc">
+    <div class="card-bg-letter">M</div>
+    <div class="card-inner">
+      <div class="card-tag">Pagamento · Etapa 1</div>
+      <div class="card-icon">👨</div>
+      <h3>Uniforme Masculino</h3>
+      <p>Inscrição do uniforme masculino via Mercado Pago</p>
+      <!-- 🔴 SUBSTITUA PELO LINK DO MERCADO PAGO MASCULINO -->
+      <a href="https://mpago.la/22vrHsb" target="_blank" class="btn btn-gold">
+        💳 Pagar Agora
+      </a>
+    </div>
+  </div>
+
+  <!-- DADOS DO UNIFORME -->
+  <div class="card card-uni">
+    <div class="card-bg-letter">U</div>
+    <div class="card-inner">
+      <div class="card-tag">Dados · Etapa 2</div>
+      <div class="card-icon">👕</div>
+      <h3>Dados do Uniforme</h3>
+      <p>Informe nome, número, tamanho e gênero da camisa via WhatsApp</p>
+      <button class="btn btn-wp" onclick="openModal()">
+        📋 Preencher Dados
+      </button>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <div class="foot-orn">
+    <div class="foot-line l"></div>
+    <div class="foot-gem"></div>
+    <div class="foot-line r"></div>
+  </div>
+  <p>© 2026 Unicap Vôlei · Direitos Reservados para Coyeber°</p>
+</footer>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeOut(event)">
+  <div class="modal">
+    <div class="modal-stripe"></div>
+    <div class="modal-header">
+      <div>
+        <div class="mh-title">👕 Dados do Uniforme</div>
+        <div class="mh-sub">Preencha todas as informações</div>
+      </div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body">
+
+      <div class="fg" id="fg-nome">
+        <label>Nome Completo</label>
+        <input type="text" id="nome" placeholder="Ex: Maria da Silva" />
+        <span class="err">Insira seu nome completo</span>
+      </div>
+
+      <div class="fg" id="fg-camisa">
+        <label>Nome na Camisa</label>
+        <input type="text" id="camisa" placeholder="Ex: SILVA" />
+        <span class="err">Insira o nome para a camisa</span>
+      </div>
+
+      <div class="row2">
+        <div class="fg" id="fg-numero">
+          <label>Número</label>
+          <input type="number" id="numero" placeholder="Ex: 10" min="1" max="99" />
+          <span class="err">Número inválido</span>
+        </div>
+        <div class="fg" id="fg-tamanho">
+          <label>Tamanho</label>
+          <select id="tamanho">
+            <option value="" disabled selected>Selecione</option>
+            <option>PP</option><option>P</option><option>M</option>
+            <option>G</option><option>GG</option><option>XGG</option>
+          </select>
+          <span class="err">Selecione o tamanho</span>
+        </div>
+      </div>
+
+      <div class="fg" id="fg-genero">
+        <label>Gênero do Uniforme</label>
+        <div class="gtabs">
+          <button class="gtab" id="tab-f" onclick="selGen('Feminino')">♀ Feminino</button>
+          <button class="gtab" id="tab-m" onclick="selGen('Masculino')">♂ Masculino</button>
+        </div>
+        <input type="hidden" id="genero" value="" />
+        <span class="err">Selecione o gênero</span>
+      </div>
+
+      <div class="mdiv"></div>
+
+      <button class="btn-send" onclick="enviar()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12.004 2C6.477 2 2 6.477 2 12.004c0 1.77.463 3.43 1.27 4.877L2 22l5.25-1.257A9.96 9.96 0 0012.004 22C17.53 22 22 17.523 22 12.004 22 6.477 17.53 2 12.004 2zm0 18.15c-1.705 0-3.294-.457-4.668-1.255l-.334-.199-3.118.747.773-3.026-.217-.348A8.12 8.12 0 013.85 12.004c0-4.497 3.657-8.154 8.154-8.154 4.498 0 8.154 3.657 8.154 8.154 0 4.498-3.656 8.146-8.154 8.146z"/></svg>
+        Enviar no WhatsApp
+      </button>
+
+    </div>
+  </div>
+</div>
+
+<script>
+  let genSel = '';
+
+  function selGen(g) {
+    genSel = g;
+    document.getElementById('genero').value = g;
+    document.getElementById('tab-f').classList.toggle('active', g === 'Feminino');
+    document.getElementById('tab-m').classList.toggle('active', g === 'Masculino');
+    document.getElementById('fg-genero').classList.remove('has-error');
+  }
+
+  function openModal() {
+    document.getElementById('modalOverlay').classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    document.getElementById('modalOverlay').classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  function closeOut(e) {
+    if (e.target === document.getElementById('modalOverlay')) closeModal();
+  }
+
+  function validate() {
+    let ok = true;
+    [['nome','fg-nome'],['camisa','fg-camisa'],['numero','fg-numero'],['tamanho','fg-tamanho']].forEach(([id,fg]) => {
+      const el = document.getElementById(id);
+      const g = document.getElementById(fg);
+      if (!el.value.trim()) { g.classList.add('has-error'); ok = false; }
+      else g.classList.remove('has-error');
+    });
+    const n = parseInt(document.getElementById('numero').value);
+    if (isNaN(n) || n < 1 || n > 99) { document.getElementById('fg-numero').classList.add('has-error'); ok = false; }
+    if (!genSel) { document.getElementById('fg-genero').classList.add('has-error'); ok = false; }
+    else document.getElementById('fg-genero').classList.remove('has-error');
+    return ok;
+  }
+
+  function enviar() {
+    if (!validate()) return;
+    const nome = document.getElementById('nome').value.trim();
+    const camisa = document.getElementById('camisa').value.trim().toUpperCase();
+    const numero = document.getElementById('numero').value.trim();
+    const tamanho = document.getElementById('tamanho').value;
+
+    const msg =
+      `🏐 *PEDIDO DE UNIFORME · UNICAP VÔLEI* 🏐%0A` +
+      `━━━━━━━━━━━━━━━━━━%0A` +
+      `👤 *Nome:* ${nome}%0A` +
+      `👕 *Nome na Camisa:* ${camisa}%0A` +
+      `🔢 *Número:* ${numero}%0A` +
+      `📏 *Tamanho:* ${tamanho}%0A` +
+      `⚧ *Gênero:* ${genSel}%0A` +
+      `━━━━━━━━━━━━━━━━━━%0A` +
+      `✅ Pagamento realizado via Mercado Pago.`;
+
+    // 🔴 SUBSTITUA PELO SEU NÚMERO (DDI+DDD+número, sem espaços ou traços)
+    const tel = '5581993118627';
+
+    window.open(`https://wa.me/${tel}?text=${msg}`, '_blank');
+  }
+</script>
+
+</body>
+</html>
